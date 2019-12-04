@@ -4,6 +4,7 @@ const helmet = require("helmet");
 
 // Import specific Routers
 const userRouter = require("./users/userRouter"); 
+const postRouter = require("./posts/postRouter"); 
 
 // Create server
 const server = express();
@@ -20,6 +21,7 @@ server.get('/', (req, res) => {
 
 // Use specific Routers
 server.use("/users", userRouter); 
+server.use("/posts", postRouter); 
 
 server.use(defaultResponse);
 
