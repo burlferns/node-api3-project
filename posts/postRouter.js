@@ -5,7 +5,10 @@ const express = require('express');
 const router = express.Router();
 
 // Import database access
-const pdb = require('../posts/postDb');
+const pdb = require('./postDb');
+
+//Import custom middleware
+const {validatePostId, validatePost} = require('../middleware/custom');
 
 // ********************************************************
 // ********************************************************
@@ -85,39 +88,39 @@ router.put('/:id', validatePostId, validatePost, (req, res) => {
 // ********************************************************
 // custom middleware
 // ********************************************************
-function validatePostId(req, res, next) {
-  // do your magic!
-  pdb.getById(req.params.id)
-    .then(post=>{
-      // console.log(post);
-      if(post) {
-        req.post = post;
-        next();
-      }
-      else {
-        res.status(400).json({ message: "invalid post id" });
-      }
-    })
-    .catch(err=>{
-      console.log("Error in pdb.getById in validatePostId");
-      res.status(500)
-        .json({error: "The post could not be accessed."});
-    })
-}
+// function validatePostId(req, res, next) {
+//   // do your magic!
+//   pdb.getById(req.params.id)
+//     .then(post=>{
+//       // console.log(post);
+//       if(post) {
+//         req.post = post;
+//         next();
+//       }
+//       else {
+//         res.status(400).json({ message: "invalid post id" });
+//       }
+//     })
+//     .catch(err=>{
+//       console.log("Error in pdb.getById in validatePostId");
+//       res.status(500)
+//         .json({error: "The post could not be accessed."});
+//     })
+// }
 
-function validatePost(req, res, next) {
-  // do your magic!
-  const body = req.body;
-  // console.log(body);
-  if(Object.keys(body).length === 0) {
-    res.status(400).json({ message: "missing post data" });
-  } 
-  else if(!body.text) {
-    res.status(400).json({ message: "missing required text field" });
-  } 
-  else {
-    next();
-  }
-}
+// function validatePost(req, res, next) {
+//   // do your magic!
+//   const body = req.body;
+//   // console.log(body);
+//   if(Object.keys(body).length === 0) {
+//     res.status(400).json({ message: "missing post data" });
+//   } 
+//   else if(!body.text) {
+//     res.status(400).json({ message: "missing required text field" });
+//   } 
+//   else {
+//     next();
+//   }
+// }
 
 module.exports = router;
